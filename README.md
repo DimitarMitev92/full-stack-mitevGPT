@@ -1,2 +1,3 @@
 # full-stack-mitevGPT
-React | Express | MongoDB | Gemini AI
+
+React 19 | React Router | Express | MongoDB | Gemini AI
