@@ -1,13 +1,6 @@
-import "./rootLayout.css";
 import { Link, Outlet } from "react-router-dom";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-} from "@clerk/clerk-react";
-
+import "./rootLayout.css";
+import { ClerkProvider, SignedIn, UserButton } from "@clerk/clerk-react";
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
@@ -20,12 +13,12 @@ const RootLayout = () => {
       <div className="rootLayout">
         <header>
           <Link to="/" className="logo">
-            <img src="/logo.png" alt="logo" />
-            <span>MitevGPT</span>
+            <img src="/logo.png" alt="" />
+            <span>MITEV AI</span>
           </Link>
           <div className="user">
             <SignedIn>
-              <SignOutButton />
+              <UserButton />
             </SignedIn>
           </div>
         </header>
