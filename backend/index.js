@@ -5,12 +5,13 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import UserChats from "./models/userChar.js";
 import Chat from "./models/chat.js";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL }));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 app.use(express.json());
 const connect = async () => {
@@ -33,8 +34,15 @@ app.get("/api/upload", (req, res) => {
   res.send(result);
 });
 
-app.post("/api/chats", async (req, res) => {
-  const { userId, text } = req.body;
+// app.get("/api/test", ClerkExpressRequireAuth(), async (req, res) => {
+//   const userId = req.auth.userId;
+//   console.log(userId);
+//   res.send("Success");
+// });
+
+app.post("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
+  const userId = req.auth.userId;
+  const { text } = req.body;
 
   try {
     // CREATE A NEW CHAT
@@ -84,6 +92,11 @@ app.post("/api/chats", async (req, res) => {
     console.log(err);
     res.status(500).send("Error creating chat!");
   }
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(401).send("Unauthorized!");
 });
 
 app.listen(PORT, () => {
