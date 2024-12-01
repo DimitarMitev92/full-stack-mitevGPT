@@ -53,6 +53,7 @@
         &:first-child {
           font-weight: 600;
         }
+
         &:last-child {
           color: #888;
         }

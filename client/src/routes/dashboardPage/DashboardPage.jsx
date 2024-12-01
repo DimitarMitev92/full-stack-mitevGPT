@@ -9,18 +9,16 @@ const DashboardPage = () => {
 
   const mutation = useMutation({
     mutationFn: async (text) => {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
+      return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ text }),
-      });
-      return await res.json();
+      }).then((res) => res.json());
     },
     onSuccess: (id) => {
-      //Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
       navigate(`/dashboard/chats/${id}`);
     },
@@ -32,7 +30,6 @@ const DashboardPage = () => {
     if (!text) return;
     mutation.mutate(text);
   };
-
   return (
     <div className="dashboardPage">
       <div className="texts">

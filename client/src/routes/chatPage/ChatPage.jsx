@@ -1,3 +1,4 @@
+import React from "react";
 import "./chatPage.css";
 import NewPrompt from "../../components/newPrompt/NewPrompt";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +18,9 @@ const ChatPage = () => {
       }).then((res) => res.json()),
   });
 
-  console.log(data);
+  if (isPending) return "Loading...";
+  if (error) return "Something went wrong!";
+  if (!data || !data.history || data.history.length === 0) return null;
 
   return (
     <div className="chatPage">
@@ -28,7 +31,7 @@ const ChatPage = () => {
             : error
             ? "Something went wrong!"
             : data?.history?.map((message, i) => (
-                <>
+                <React.Fragment key={i}>
                   {message.img && (
                     <IKImage
                       urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
@@ -48,7 +51,7 @@ const ChatPage = () => {
                   >
                     <Markdown>{message.parts[0].text}</Markdown>
                   </div>
-                </>
+                </React.Fragment>
               ))}
 
           {data && <NewPrompt data={data} />}
